@@ -113,5 +113,3 @@ Este projeto foi desenvolvido para praticar conceitos de:
 * Regras de Negócio
 * Boas práticas de desenvolvimento backend
 
-```
-```
