@@ -3,19 +3,20 @@ import { InMemoryMealRepository } from './in-memory/in-memory-meal-repository'
 import { FindMealService } from '../service/find-meal-service'
 import { MealNotFound } from '../errors/meal-not-found-error'
 import { NotAuthorizedFound } from '../errors/not-authorized-error'
+import { RemoveMealService } from '../service/remove-meal-service'
 
 
 let mealRepository: InMemoryMealRepository
-let sut: FindMealService
+let sut: RemoveMealService
 
-describe('Find meal Use Case', () => {
+describe('Remove meal Use Case', () => {
 
     beforeEach(() => {
         mealRepository = new InMemoryMealRepository()
-        sut = new FindMealService(mealRepository)
+        sut = new RemoveMealService(mealRepository)
     })
 
-    it('should be able to find meal', async () => {
+    it('should be able to remove meal', async () => {
     
        const create =  await mealRepository.create({
             name: 'Macarrão1',
@@ -24,14 +25,14 @@ describe('Find meal Use Case', () => {
         }, '1')
 
 
-        const {meal} = await sut.execute({mealId: create.id}, '1')
+        await sut.execute({mealId: create.id}, '1')
 
-        expect(meal.name).toEqual('Macarrão1')
+        expect(mealRepository.meals).toHaveLength(1)
     })
 
-    it('should be able to find meal with mealId incorrect', async () => {
+    it('should be able to remove meal with mealId incorrect', async () => {
     
-        const create = await mealRepository.create({
+        await mealRepository.create({
             name: 'Macarrão',
             description: 'Macarrão com queijo e frango grelhado',
             isOnDiet: true
@@ -41,7 +42,7 @@ describe('Find meal Use Case', () => {
         .rejects.toBeInstanceOf(MealNotFound)
     })
     
-    it('should be able to find meal with other userId', async () => {
+    it('should be able to remove meal with other userId', async () => {
     
         const create = await mealRepository.create({
             name: 'Macarrão',

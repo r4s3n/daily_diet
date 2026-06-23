@@ -34,7 +34,7 @@ export class InMemoryMealRepository implements MealRepository{
             ...meal
         }
 
-        return mealIndex
+        return this.meals[index]
     }
 
     async delete(mealId: string){
@@ -49,19 +49,25 @@ export class InMemoryMealRepository implements MealRepository{
         return mealList
     }
 
-    async totalMeals(userId: string): Promise<number> {
-        throw new Error("Method not implemented.");
+    async totalMeals(userId: string) {
+         const mealList = this.meals.filter((item) => item.userId === userId).length
+
+         return mealList
     }
 
     async totalMealsInDiet(userId: string): Promise<number> {
-        throw new Error("Method not implemented.");
+        const mealList = this.meals.filter((item) => item.userId === userId && item.isOnDiet === true).length
+
+        return mealList
     }
 
     async totalMealsOutOfDiet(userId: string): Promise<number> {
-        throw new Error("Method not implemented.");
+        const mealList = this.meals.filter((item) => item.userId === userId && item.isOnDiet === false).length
+
+        return mealList
     }
 
     async sequenceOfMealsInDiet(userId: string): Promise<Meal[]> {
-        throw new Error("Method not implemented.");
+        return this.meals.filter((item) => item.userId === userId)
     }
 }
