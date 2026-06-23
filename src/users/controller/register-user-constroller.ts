@@ -1,6 +1,7 @@
 import {FastifyRequest , FastifyReply } from "fastify";
 import { MakeRegisterService } from "../factories/make-register-service.js";
 import { RegisterSchema } from "../schema/register-user.schema.js";
+import { UserAlreadyExists } from "../errors/user-already-exists-error.js";
 
 export async function RegisterUserController(req: FastifyRequest, res: FastifyReply) {
     const data = RegisterSchema.parse(req.body)
@@ -12,7 +13,7 @@ export async function RegisterUserController(req: FastifyRequest, res: FastifyRe
         return res.status(201).send(user)
         
     } catch (error: any) {
-        if(error instanceof Error){
+        if(error instanceof UserAlreadyExists){
             res.status(400).send({
                 error: error.message
             })
