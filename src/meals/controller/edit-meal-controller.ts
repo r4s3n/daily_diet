@@ -2,6 +2,8 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { MakeEditMealService } from "../factories/make-edit-meal";
 import { EditMealSchema } from "../schema/edit-meal.schema";
 import { MealIdSchema } from "../schema/meal-id.schema";
+import { NotAuthorizedFound } from "../errors/not-authorized-error";
+import { MealNotFound } from "../errors/meal-not-found-error";
 
 export async function EditMealController(req: FastifyRequest, res: FastifyReply) {
     const data = EditMealSchema.parse(req.body)
@@ -15,7 +17,7 @@ export async function EditMealController(req: FastifyRequest, res: FastifyReply)
         res.status(200).send(service)
 
     } catch (error: any) {
-        if(error instanceof Error){
+        if(error instanceof MealNotFound || error instanceof NotAuthorizedFound ){
             res.status(400).send({
                 error: error.message
             })
