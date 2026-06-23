@@ -22,7 +22,7 @@ export class AuthenticateUserService{
         }
         
         return {
-            user: user
+            user
         }
 
     }
